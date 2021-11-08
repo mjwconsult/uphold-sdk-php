@@ -247,7 +247,7 @@ class TransactionTest extends ModelTestCase
 
     /**
      * @test
-     * @expectedException Uphold\Exception\LogicException
+     * @expectedException \Uphold\Exception\LogicException
      */
     public function shouldThrowAnErrorOnCommitWhenCardIdIsNotDefined()
     {

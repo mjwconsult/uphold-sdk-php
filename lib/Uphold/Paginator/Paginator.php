@@ -14,7 +14,7 @@ class Paginator
     /**
      * Uphold client.
      *
-     * @var UpholdClient
+     * @var \Uphold\UpholdClient
      */
     protected $client;
 
@@ -70,7 +70,7 @@ class Paginator
     /**
      * Constructor.
      *
-     * @param UpholdClient $client Uphold client.
+     * @param \Uphold\UpholdClient $client Uphold client.
      * @param string $path Request path.
      * @param array $parameters Request parameters.
      * @param array $headers Request headers.

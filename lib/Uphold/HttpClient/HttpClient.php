@@ -16,7 +16,7 @@ class HttpClient implements HttpClientInterface
     /**
      * Uphold client.
      *
-     * @var UpholdClient
+     * @var \Uphold\UpholdClient
      */
     protected $client;
 
@@ -40,7 +40,7 @@ class HttpClient implements HttpClientInterface
     public function __construct(array $options = array())
     {
         $this->options = array_merge($this->options,
-            array('message_factory' => new MessageFactory()),
+            [],
             $options
         );
 
@@ -119,10 +119,8 @@ class HttpClient implements HttpClientInterface
 
         $options['body'] = $body;
 
-        $request = $this->client->createRequest($httpMethod, $path, $options);
-
         try {
-            $response = $this->client->send($request);
+            $response = $this->client->request($httpMethod, $path, $options);
         } catch(\Exception $e) {
             $this->errorHandler->onException($e);
         }

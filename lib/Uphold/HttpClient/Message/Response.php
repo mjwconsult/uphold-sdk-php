@@ -2,7 +2,7 @@
 
 namespace Uphold\HttpClient\Message;
 
-use GuzzleHttp\Message\Response as BaseResponse;
+use GuzzleHttp\Psr7\Response as BaseResponse;
 
 /**
  * Response.

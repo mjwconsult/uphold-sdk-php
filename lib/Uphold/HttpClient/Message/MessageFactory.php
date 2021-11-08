@@ -3,8 +3,7 @@
 namespace Uphold\HttpClient\Message;
 
 use Uphold\HttpClient\Message\Response;
-use GuzzleHttp\Message\MessageFactory as BaseMessageFactory;
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\MessageFactory as BaseMessageFactory;
 
 /**
  * HTTP request factory used to create Request and Response objects.
@@ -23,10 +22,6 @@ class MessageFactory extends BaseMessageFactory
      */
     public function createResponse($statusCode, array $headers = array(), $body = null, array $options = array())
     {
-        if (null !== $body) {
-            $body = Stream::factory($body);
-        }
-
         return new Response($statusCode, $headers, $body, $options);
     }
 }

@@ -43,7 +43,7 @@ abstract class ModelTestCase extends BaseTestCase
      *
      * @param array $methods Mocked methods.
      *
-     * @return UpholdClient
+     * @return \Uphold\UpholdClient
      */
     protected function getUpholdClientMock(array $methods = array())
     {
@@ -51,7 +51,6 @@ abstract class ModelTestCase extends BaseTestCase
             array('get', 'post', 'patch', 'put', 'delete', 'request', 'setOption', 'setHeaders', 'getOption'),
             $methods
         );
-
         return $this->getMock('Uphold\UpholdClient', $methods);
     }
 

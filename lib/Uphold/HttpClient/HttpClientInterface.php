@@ -2,8 +2,6 @@
 
 namespace Uphold\HttpClient;
 
-use GuzzleHttp\Message\Response;
-
 /**
  * Performs requests on Uphold API.
  */
