@@ -268,11 +268,12 @@ class UpholdClient
     /**
      * Authorize user via Uphold Connect.
      *
-     * @param string $code The code parameter that is passed via the Uphold Connect callback url.
+     * @param string $code The code parameter that is passed via the Uphold Connect callback url. Set to '' for "Client Credentials Flow"
+     * @param string $grantType Default 'authorization_code' for "Web Application Flow". Set to 'client_credentials' for "Client Credentials Flow"
      *
      * @return User
      */
-    public function authorizeUser($code)
+    public function authorizeUser($code, $grantType = 'authorization_code')
     {
         $clientId = $this->getOption('client_id');
         $clientSecret = $this->getOption('client_secret');
@@ -291,10 +292,20 @@ class UpholdClient
             'Content-Type' => 'application/x-www-form-urlencoded',
         );
 
-        $parameters = http_build_query(array(
-            'code' => $code,
-            'grant_type' => 'authorization_code',
-        ));
+        switch ($grantType) {
+          case 'client_credentials':
+            $parameters = http_build_query([
+              'grant_type' => 'client_credentials',
+            ]);
+            break;
+
+          case 'authorization_code':
+          default:
+            $parameters = http_build_query([
+              'code' => $code,
+              'grant_type' => 'authorization_code',
+            ]);
+        }
 
         $response = $this->getHttpClient()->post(
             '/oauth2/token',
