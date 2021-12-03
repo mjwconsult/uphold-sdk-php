@@ -16,12 +16,7 @@
         "php": ">=7.3",
         "ext-curl": "*",
         "guzzlehttp/guzzle": "~6.5",
-        "symfony/console": "~2.8",
-        "seegno/test-bundle": "^2.0"
-    },
-    "require-dev": {
-        "codeclimate/php-test-reporter": "~0.4",
-        "phpdocumentor/phpdocumentor": "~2.9"
+        "symfony/console": "~4.4"
     },
     "autoload": {
         "psr-0": { "Uphold\\": "lib/" }
