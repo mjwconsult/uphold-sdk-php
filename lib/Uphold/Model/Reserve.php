@@ -35,7 +35,7 @@ class Reserve extends BaseModel implements ReserveInterface
     {
         $response = $this->client->get('/reserve/statistics');
 
-        return $response->getContent();
+        return json_decode($response->getBody()->getContents(), TRUE);
     }
 
     /**
@@ -45,7 +45,7 @@ class Reserve extends BaseModel implements ReserveInterface
     {
         $response = $this->client->get(sprintf('/reserve/transactions/%s', $id));
 
-        return new Transaction($this->client, $response->getContent());
+        return new Transaction($this->client, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**

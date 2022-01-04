@@ -103,7 +103,7 @@ class User extends BaseModel implements UserInterface
 
         return array_map(function($data) {
             return new Account($this->client, $data);
-        }, $response->getContent());
+        }, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -113,7 +113,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get(sprintf('/me/accounts/%s', $id));
 
-        return new Account($this->client, $response->getContent());
+        return new Account($this->client, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -123,7 +123,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get('/me');
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
 
         return $this->balances['currencies'];
     }
@@ -135,7 +135,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get('/me');
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
 
         foreach ($this->balances['currencies'] as $balanceCurrency => $balance) {
             if ($currency === $balanceCurrency) {
@@ -159,7 +159,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get(sprintf('/me/cards/%s', $id));
 
-        return new Card($this->client, $response->getContent());
+        return new Card($this->client, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -171,7 +171,7 @@ class User extends BaseModel implements UserInterface
 
         return array_map(function($card) {
             return new Card($this->client, $card);
-        }, $response->getContent());
+        }, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -181,7 +181,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get('/me/cards');
 
-        $cards = array_reduce($response->getContent(), function($cards, $card) use ($currency) {
+        $cards = array_reduce(json_decode($response->getBody()->getContents(), TRUE), function($cards, $card) use ($currency) {
             if ($currency !== $card['currency']) {
                 return $cards;
             }
@@ -203,7 +203,7 @@ class User extends BaseModel implements UserInterface
 
         return array_map(function($contact) {
             return new Contact($this->client, $contact);
-        }, $response->getContent());
+        }, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -262,7 +262,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get('/me/phones');
 
-        $this->phones = $response->getContent();
+        $this->phones = json_decode($response->getBody()->getContents(), TRUE);
 
         return $this->phones;
     }
@@ -274,7 +274,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get('/me');
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
 
         return $this->settings;
     }
@@ -302,7 +302,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->get('/me');
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
 
         return array(
             'amount' => $this->balances['total'],
@@ -336,7 +336,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->post('/me/cards', array('label' => $label, 'currency' => $currency));
 
-        return new Card($this->client, $response->getContent());
+        return new Card($this->client, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -346,7 +346,7 @@ class User extends BaseModel implements UserInterface
     {
         $response = $this->client->patch('/me', $params);
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
 
         return $this;
     }

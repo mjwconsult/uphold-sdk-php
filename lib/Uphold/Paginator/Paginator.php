@@ -153,7 +153,7 @@ class Paginator
             $this->limit = $contentRange['end'] - $contentRange['start'] + 1;
             $this->offset = $contentRange['end'] + 1;
 
-            return $this->hydrate($response->getContent());
+            return $this->hydrate(json_decode($response->getBody()->getContents(), TRUE));
         } catch (UpholdClientException $e) {
             if (412 === $e->getHttpCode() || 416 === $e->getHttpCode()) {
                 return $this->hydrate(array());

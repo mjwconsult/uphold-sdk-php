@@ -188,7 +188,7 @@ class Transaction extends BaseModel implements TransactionInterface
 
         $response = $this->client->post(sprintf('/me/cards/%s/transactions/%s/commit', $this->origin['CardId'], $this->id));
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -210,7 +210,7 @@ class Transaction extends BaseModel implements TransactionInterface
 
         $response = $this->client->post(sprintf('/me/cards/%s/transactions/%s/cancel', $this->origin['CardId'], $this->id));
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -228,6 +228,6 @@ class Transaction extends BaseModel implements TransactionInterface
 
         $response = $this->client->post(sprintf('/me/cards/%s/transactions/%s/resend', $this->origin['CardId'], $this->id));
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
     }
 }

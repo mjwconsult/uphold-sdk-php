@@ -576,7 +576,7 @@ class UpholdClientTest extends BaseTestCase
 
         $response = $client->$httpMethod('/path', $params, $options);
 
-        $this->assertEquals($expectedArray, $response->getContent());
+        $this->assertEquals($expectedArray, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -625,7 +625,7 @@ class UpholdClientTest extends BaseTestCase
 
         $response = $client->$httpMethod('/path', $params, $options);
 
-        $this->assertEquals($expectedArray, $response->getContent());
+        $this->assertEquals($expectedArray, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -670,7 +670,7 @@ class UpholdClientTest extends BaseTestCase
 
         $response = $client->$httpMethod('/path', $params, $options);
 
-        $this->assertEquals($expectedArray, $response->getContent());
+        $this->assertEquals($expectedArray, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**

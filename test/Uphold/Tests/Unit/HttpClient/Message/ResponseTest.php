@@ -25,7 +25,7 @@ class ResponseTest extends BaseTestCase
             ->will($this->returnValue($body))
         ;
 
-        $this->assertEquals($body, $response->getContent());
+        $this->assertEquals($body, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -43,7 +43,7 @@ class ResponseTest extends BaseTestCase
             ->will($this->returnValue(json_encode($data)))
         ;
 
-        $this->assertEquals($data, $response->getContent());
+        $this->assertEquals($data, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**

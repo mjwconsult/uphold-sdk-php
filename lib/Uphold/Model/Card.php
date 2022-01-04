@@ -189,7 +189,7 @@ class Card extends BaseModel implements CardInterface
 
         $response = $this->client->post(sprintf('/me/cards/%s/transactions?commit=%s', $this->id, $commit), $postData);
 
-        $transaction = new Transaction($this->client, $response->getContent());
+        $transaction = new Transaction($this->client, json_decode($response->getBody()->getContents(), TRUE));
 
         return $transaction;
     }
@@ -201,7 +201,7 @@ class Card extends BaseModel implements CardInterface
     {
         $response = $this->client->patch(sprintf('/me/cards/%s', $this->id), $data);
 
-        $this->updateFields($response->getContent());
+        $this->updateFields(json_decode($response->getBody()->getContents(), TRUE));
 
         return $this;
     }
