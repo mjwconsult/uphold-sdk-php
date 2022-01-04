@@ -163,7 +163,7 @@ class UpholdClient
 
         return array_map(function($rate) {
             return new Rate($this,($rate));
-        }, $response->getContent());
+        }, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -179,7 +179,7 @@ class UpholdClient
 
         return array_map(function($rate) {
             return new Rate($this, $rate);
-        }, $response->getContent());
+        }, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -236,8 +236,7 @@ class UpholdClient
         $client = $this->getFactory()->create($options);
 
         $response = $client->get('/me');
-
-        return new User($client, $response->getContent());
+        return new User($client, json_decode($response->getBody()->getContents(), TRUE));
     }
 
     /**
@@ -257,12 +256,12 @@ class UpholdClient
             'OTP-Token' => $otp,
         ));
 
-        $response = $this->post('/me/tokens',
+        $response = $this->post($this->buildPath('/me/tokens'),
             array('description' => $description),
             $headers
         );
 
-        return $response->getContent();
+        return json_decode($response->getBody()->getContents(), TRUE);
     }
 
     /**
@@ -308,12 +307,12 @@ class UpholdClient
         }
 
         $response = $this->getHttpClient()->post(
-            '/oauth2/token',
+            $this->buildPath('/oauth2/token'),
             $parameters,
             array_merge($this->getDefaultHeaders(), $headers)
         );
 
-        $content = $response->getContent();
+        $content = json_decode($response->getBody()->getContents(), TRUE);
         $bearerToken = isset($content['access_token']) ? $content['access_token'] : null;
 
         return $this->getUser($bearerToken);
@@ -418,11 +417,15 @@ class UpholdClient
      */
     protected function buildPath($path)
     {
-        if (empty($this->options['api_version'])) {
-            return $path;
+        // Stripe leading / as base_url already has it.
+        if ($path[0] === '/') {
+          //$path = substr($path, 1);
+        }
+        if (empty($this->options['api_version']) || ($path === '/oauth2/token')) {
+          return sprintf('%s%s', $this->options['base_url'], $path);
         }
 
-        return sprintf('%s%s', $this->options['api_version'], $path);
+        return sprintf('%s/%s%s', $this->options['base_url'], $this->options['api_version'], $path);
     }
 
     /**

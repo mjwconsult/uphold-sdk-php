@@ -69,7 +69,9 @@ class ErrorHandler
      */
     protected function onRequestException(RequestException $e)
     {
+        /** @var Psr\Http\Message\RequestInterface $request */
         $request = $e->getRequest();
+        /** @var Psr\Http\Message\ResponseInterface $response */
         $response = $e->getResponse();
 
         if (!$response) {
@@ -78,21 +80,16 @@ class ErrorHandler
 
         $statusCode = $response->getStatusCode();
 
-        $isClientError = $response->isClientError();
-        $isServerError = $response->isServerError();
-
-        if ($isClientError || $isServerError) {
-            $content = $response->getContent();
-
-            $error = $response->getError();
-            $description = $response->getErrorDescription();
+        if ($statusCode !== 200) {
+            $error = $response->getReasonPhrase();
+            $description = $response->getStatusCode() . ' - ' . $error;
 
             if (400 === $statusCode) {
                 throw new BadRequestException($description, $error, $statusCode, $response, $request);
             }
 
             if (401 === $statusCode) {
-                $otp = (string) $response->getHeader('OTP-Token');
+                $otp = $response->hasHeader('OTP-Token') ? (string) $response->getHeader('OTP-Token') : '';
 
                 if ('required' === $otp) {
                     $description = 'Two factor authentication is enabled on this account';
@@ -104,7 +101,7 @@ class ErrorHandler
             }
 
             if (404 === $statusCode) {
-                $description = sprintf('Object or route not found: %s', $request->getPath());
+                $description = sprintf('Object or route not found: %s', $request->getUri());
 
                 throw new NotFoundException($description, 'not_found', $statusCode, $response, $request);
             }
