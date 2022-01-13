@@ -91,7 +91,7 @@ interface CardInterface
      *
      * @param string $destination Email or bitcoin address.
      * @param string $amount The amount to be transfered.
-     * @param array $denomination Transaction denomination.
+     * @param string $currency Transaction denomination.
      *
      * @return Transaction
      */
