@@ -21,7 +21,7 @@ class Card extends BaseModel implements CardInterface
     /**
      * Address.
      *
-     * @var string
+     * @var array
      */
     protected $address;
 
