@@ -149,7 +149,8 @@ class Card extends BaseModel implements CardInterface
      */
     public function getAddresses()
     {
-        return $this->client->get(sprintf('/me/cards/%s/addresses', $this->id))->getContent();
+      $response = $this->client->get(sprintf('/me/cards/%s/addresses', $this->id));
+      return json_decode($response->getBody()->getContents(), TRUE);
     }
 
     /**
